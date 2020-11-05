@@ -46,7 +46,7 @@ module.exports = {
         //   key: fs.readFileSync('./192.168.18.114-key.pem'),
         //   cert: fs.readFileSync('./192.168.18.114.pem'),
         // },
-        host: "192.168.18.114",
+        host: "192.168.3.2",
         port: global.port,
         contentBase: './dist',
         // stats: 'errors-warnings',

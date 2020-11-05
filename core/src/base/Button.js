@@ -1,7 +1,7 @@
 import { Sprite, Texture } from 'pixi.js-legacy';
 import { Base } from './Base';
 import { Container } from 'pixi.js-legacy';
-
+import { fadeIn, fadeOut } from '../motion/Motion.js';
 // function Button()
 // {
 //     console.log('Button');
@@ -33,7 +33,6 @@ export default class Button extends Container {
         }
 
         this.currentSkin = this.defaultSkin;
-        // this.hoverSkin = new Sprite.from(downSkin);
         this.lastStat = 'none';
 
         let downPT = { x: 0, y: 0 };
@@ -48,8 +47,6 @@ export default class Button extends Container {
             this.scale.set(1);
             let { x, y } = e.data.global;
             let [_x, _y] = [downPT.x, downPT.y];
-
-            console.log(x, y, _x, _y)
             let dis = (x - _x) * (x - _x) + (y - _y) * (y - _y);
             if (dis < 100) {
                 this.emit('trigger', { 'e': e })
@@ -66,7 +63,6 @@ export default class Button extends Container {
             }
         })
         this.on('pointerout', (e) => {
-            console.log('pointerout')
             this.scale.set(1);
             if (this.currentSkin.parent && this.lastStat != 'out') {
                 updateSkin.call(this, 'out');
@@ -79,13 +75,18 @@ export default class Button extends Container {
             if (this.lastStat == stat) {
                 return
             }
-            this.removeChild(this.currentSkin);
+
+            // this.removeChild(this.currentSkin);
             this.lastStat = stat;
             if (stat == 'hover') {
                 this.currentSkin = this.hoverSkin;
+                fadeIn(this.currentSkin, 0.5, { alpha: 1 });
             }
             else if (stat == 'out' || stat == 'up') {
                 this.currentSkin = this.defaultSkin;
+                if (stat == 'out') {
+                    fadeIn(this.currentSkin, 0.5, { alpha: 1 });
+                }
             }
             else if (stat == 'down') {
                 this.currentSkin = this.downSkin;
